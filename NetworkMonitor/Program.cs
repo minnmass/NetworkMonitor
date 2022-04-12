@@ -12,8 +12,9 @@ namespace NetworkMonitor {
 		//private const string _externalHost = "192.168.4.1";
 		//private const string _externalHost = "asdfas";
 		private const string _outputPath = "out.log";
-		private const int _pingTimeoutMS = 120;
+		private const int _pingTimeoutMS = 1000;
 		private const int _pingFrequencyMS = 100;
+		private const int _pingThresholdMs = 120;
 
 		// Create a buffer of 32 bytes of data to be transmitted.
 		private static readonly byte[] _pingPayload;
@@ -100,7 +101,7 @@ namespace NetworkMonitor {
 					isError = true;
 					errorMessage.AppendLine(externalError);
 					errorMessage.AppendLine(pair.External.Reply?.Status.ToString() ?? "unknown error");
-				} else if (pair.External.Reply.RoundtripTime > _pingTimeoutMS) {
+				} else if (pair.External.Reply.RoundtripTime > _pingThresholdMs) {
 					isError = true;
 					errorMessage.Append(externalPingTimeError);
 					errorMessage.Append(pair.External.Reply.RoundtripTime.ToString());
